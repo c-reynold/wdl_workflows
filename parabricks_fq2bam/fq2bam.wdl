@@ -67,7 +67,7 @@ task trim_umi {
        
         set -euo pipefail
 
-        trimmomatic PE ~{r1_fastq} ~{r2_fastq} ~{r1_name}.trimmed.fastq.gz ~{r1_name}.unpaired.fastq.gz ~{r2_name}.trimmed.fastq.gz ~{r2_name}.unpaired.fastq.gz \
+        trimmomatic PE -phred33 ~{r1_fastq} ~{r2_fastq} ~{r1_name}.trimmed.fastq.gz ~{r1_name}.unpaired.fastq.gz ~{r2_name}.trimmed.fastq.gz ~{r2_name}.unpaired.fastq.gz \
         HEADCROP:~{umi_length}
 
     >>>
