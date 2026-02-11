@@ -15,7 +15,7 @@ output_dir = "parabricks_fq2bam/fastq2bam_sample_jsons"
 #Set this to false if the DNA nexus filenames are not consistent between reads. This should be a rare and extenuating circumstance if this is not the case.
 #Fastq filenames really should not be different between read 1 and read 2. If they are, then whatever is generating fastq files needs to be fixed or changed.
 #This check is slow with many fastq
-filename_check = True
+filename_check = False
 
 
 
@@ -93,7 +93,7 @@ else:
 #This is the reason behind all of this checking. Perhaps in the future, this validation/verification can be done in an initial step of the fq2bam.wdl
 #For now, we are using file names to get read and  
 pivoted_samples = samples.pivot(
-    index=["sample_id", "lane", "umi_length"],
+    index=["sample_id", "lane", "trim_length"],
     columns="read",
     values="file_id"
     ).reset_index()
@@ -107,7 +107,7 @@ missing_mask = pivoted_samples[["R1", "R2"]].isna().any(axis=1)
 if missing_mask.any():
     bad_rows = pivoted_samples.loc[
         missing_mask,
-        ["sample_id", "lane", "umi_length", "R1", "R2"]
+        ["sample_id", "lane", "trim_length", "R1", "R2"]
     ]
 
     print("The following sample/lane combinations are missing R1 or R2:")
@@ -128,10 +128,11 @@ if filename_check:
 
     for _, row in pivoted_samples.iterrows():
         
-        
+        #pull file IDs from the dataframe from the csv file
         file_id_read_1=(row["R1"])
         file_id_read_2=(row["R2"])
 
+        #Get the filename on DNA nexus from the fileID
         filename_r1 = dx.describe(file_id_read_1)["name"]
         filename_r2 = dx.describe(file_id_read_2)["name"]
 
@@ -166,8 +167,8 @@ grouped_frames = pivoted_samples.groupby("sample_id")
 #This block is what actually builds the sample sheets
 for sample_id, g in grouped_frames:
 
-    if g["umi_length"].nunique() != 1:
-        raise ValueError(f"Sample {sample_id} has multiple umi_length values: {g['umi_length'].unique()}")
+    if g["trim_length"].nunique() != 1:
+        raise ValueError(f"Sample {sample_id} has multiple trim_length values: {g['trim_length'].unique()}")
 
     # Sort lanes so R1/R2 arrays align by lane order (L001, L002, ...)
     g = g.sort_values("lane")
@@ -175,14 +176,14 @@ for sample_id, g in grouped_frames:
     r1_list = [dxlink(fid) for fid in g["R1"].tolist()]
     r2_list = [dxlink(fid) for fid in g["R2"].tolist()]
 
-    # If umi_length is per-sample, take the first (or validate uniqueness upstream)
-    umi = int(g["umi_length"].iloc[0])
+    # If trim_length is per-sample, take the first (or validate uniqueness upstream)
+    umi = int(g["trim_length"].iloc[0])
 
     inputs = {
         "stage-common.r1_fastqs": r1_list,
         "stage-common.r2_fastqs": r2_list,
-        "stage-common.umi_length": umi,
-        "stage-common.reference_genome": dxlink(reference_genome),
+        "stage-common.trim_length": umi,
+        "stage-common.reference_genome": dxlink(reference_genome)
     }
 
     print(f"All checks for {sample_id} were successful. Generating input.json... ")

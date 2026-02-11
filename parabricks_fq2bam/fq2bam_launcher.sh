@@ -3,8 +3,7 @@
 set -euo pipefail
 shopt -s nullglob  # so empty dir = no iteration
 
-message_to_add_to_readme="These samples had their UMIs trimmed and then were aligned with parabricks fastq to bam using MRDs hg19 genome"
-
+message_to_add_to_readme="These samples had their UMIs trimmed and two additional bases trimmed and then were aligned with parabricks fastq to bam using MRDs hg19 genome"
 
 
 # api_key="$dx_api_key"
@@ -14,8 +13,8 @@ dx select --name "liquid_hrd"
 
 
 
-workflow_id="workflow-J5qJ68j0ZV7Qqvx0Qk8zggPP"
-output_dir="liquid_hrd:/bam_files/aligned_to_MRD_hg19/$(date +%Y%m%d_%H%M%S)"
+workflow_id="workflow-J65gg2Q0ZV7ZXb4ZG5zvvZ97"
+output_dir="liquid_hrd:/bam_files/aligned_to_MRD_hg19/$(date +%Y%m%d_%H%M%S)-umi+2"
 json_directory="parabricks_fq2bam/fastq2bam_sample_jsons"
 
 dx mkdir -p "$output_dir"

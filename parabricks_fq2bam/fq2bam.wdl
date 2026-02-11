@@ -9,13 +9,13 @@ workflow fq2bam {
     input {
         Array[File] r1_fastqs
         Array[File] r2_fastqs
-        Int umi_length
+        Int trim_length
         File reference_genome
     }
 
 String sample_name = sub(basename(r1_fastqs[0]), "_.*$", "")
 String bam = sample_name + ".bam"
-String bam_idx = sample_name + ".bai"
+String bam_idx = sample_name + ".bam.bai"
 
 Int n = length(r1_fastqs)
 
@@ -25,7 +25,7 @@ Int n = length(r1_fastqs)
             input:
                 r1_fastq = r1_fastqs[i],
                 r2_fastq = r2_fastqs[i],
-                umi_length = umi_length
+                trim_length = trim_length
 }
 
     }
@@ -56,7 +56,7 @@ task trim_umi {
 
         File r1_fastq
         File r2_fastq
-        Int umi_length
+        Int trim_length
 
     }
 
@@ -68,7 +68,7 @@ task trim_umi {
         set -euo pipefail
 
         trimmomatic PE -phred33 ~{r1_fastq} ~{r2_fastq} ~{r1_name}.trimmed.fastq.gz ~{r1_name}.unpaired.fastq.gz ~{r2_name}.trimmed.fastq.gz ~{r2_name}.unpaired.fastq.gz \
-        HEADCROP:~{umi_length}
+        HEADCROP:~{trim_length}
 
     >>>
 
@@ -138,8 +138,26 @@ task align_bam {
         in_fq_args=()
 
         for ((i=0; i<${#r1_arr[@]}; i++)); do
+            fq_base="$(basename "${r1_arr[i]}")"
 
-            in_fq_args+=( --in-fq "${r1_arr[i]}" "${r2_arr[i]}" )
+            sample_name="${fq_base%%_S*}"
+
+            #creates an arbitrary string for flowcell
+            flowcell="flowcell"
+
+            # # lane digits after _L (robust)
+            # sample_lane="$(echo "$fq_base" | sed -n 's/.*_L\([0-9]\+\)_.*/\1/p')"
+            # if [[ -z "$sample_lane" ]]; then
+            #     echo "ERROR: could not parse lane from filename: $fq_base" >&2
+            #     exit 1
+            # fi
+
+            # # optional: derive flowcell from header if not provided elsewhere
+            # flowcell="$(zcat "${r1_arr[i]}" | head -n 1 | cut -d: -f3 | sed 's/^@//' || true)"
+
+            rg="@RG\tID:${sample_name}.${i}\tPL:Illumina\tPU:${flowcell}.${i}\tSM:${sample_name}\tLB:default"
+
+            in_fq_args+=( --in-fq "${r1_arr[i]}" "${r2_arr[i]}" "$rg" )
 
         done
 
