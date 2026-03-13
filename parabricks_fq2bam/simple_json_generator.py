@@ -3,11 +3,15 @@ import pandas as pd
 import json
 import dxpy as dx
 import sys
+from pathlib import Path
 
+
+
+#These should be the project in which the fastq files are located.
 project_id = "project-J2zPy600ZV7y1F26fbzv4vk9"
 reference_genome = "file-GpkQV9Q07fG36gzq1v1K8FjB"
 
-sample_sheet = "parabricks_fq2bam/fastq2bam_samples.csv"
+sample_sheet = "parabricks_fq2bam/sample_sheets/recover_sample_sheet_trim_2.csv"
 output_dir = "parabricks_fq2bam/fastq2bam_sample_jsons"
 
 #Whether or not to use the File ID to look up the DNA nexus filename to validate that the filenames for 2 paried reads differ only by "R1" and "R2"
@@ -15,8 +19,10 @@ output_dir = "parabricks_fq2bam/fastq2bam_sample_jsons"
 #Set this to false if the DNA nexus filenames are not consistent between reads. This should be a rare and extenuating circumstance if this is not the case.
 #Fastq filenames really should not be different between read 1 and read 2. If they are, then whatever is generating fastq files needs to be fixed or changed.
 #This check is slow with many fastq
-filename_check = False
+filename_check = True
 
+Path(output_dir).rmdir
+Path(output_dir).mkdir(parents=True, exist_ok=True)
 
 
 
@@ -133,8 +139,8 @@ if filename_check:
         file_id_read_2=(row["R2"])
 
         #Get the filename on DNA nexus from the fileID
-        filename_r1 = dx.describe(file_id_read_1)["name"]
-        filename_r2 = dx.describe(file_id_read_2)["name"]
+        filename_r1 = dx.describe(file_id_read_1)["name"] #type: ignore
+        filename_r2 = dx.describe(file_id_read_2)["name"] #type: ignore
 
         print(f"Using {file_id_read_1} and {file_id_read_2} checking {filename_r1} and {filename_r2}")
 

@@ -98,7 +98,7 @@ task align_bam {
     runtime {
     
     docker: "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
-    dx_instance_type: "mem2_ssd1_gpu_x32"
+    dx_instance_type: "mem2_ssd2_gpu1_v2_x64"
     
     }
 
