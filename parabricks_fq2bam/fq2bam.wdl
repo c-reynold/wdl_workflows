@@ -98,6 +98,9 @@ task align_bam {
     runtime {
     
     docker: "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
+    #note: For some reason DNA nexus won't default to this instance type.
+    #I"m keeping it hard coded here, but for future problem solving, the way that I force this
+    #is by including the --instance-type align_bam=mem2_ssd2_gpu1_v2_x64 flag in the fq2bam_launcher.sh script when I launch the workflow.
     dx_instance_type: "mem2_ssd2_gpu1_v2_x64"
     
     }

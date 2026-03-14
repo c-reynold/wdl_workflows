@@ -28,6 +28,7 @@ for file in "$json_directory"/*.json; do
     --priority high \
     --brief \
     --name "fq2bam_${sample_name}" \
+    --instance-type align_bam=mem2_ssd2_gpu1_v2_x64 \
     -y)
 
   echo "Launched job $job_id for sample $sample_name"
