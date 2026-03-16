@@ -3,3 +3,5 @@ fastq_test_files/6484_snippet_2.fastq
 fastq_test_files/6484_snippet_1.fastq
 dx_compile/dxCompiler-2.15.0.jar
 test_script.sh
+parabricks_fq2bam/fastq2bam_sample_jsons/
+tmp/

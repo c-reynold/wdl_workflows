@@ -5,13 +5,16 @@ import dxpy as dx
 import sys
 from pathlib import Path
 
-
+#RD_Analysis project: project-GPgxkj8070pyZXjk58KbQffV
+#liquid_hrd project:project-J2zPy600ZV7y1F26fbzv4vk9
 
 #These should be the project in which the fastq files are located.
-project_id = "project-J2zPy600ZV7y1F26fbzv4vk9"
+fastq_project_id = "project-GPgxkj8070pyZXjk58KbQffV"
+
+ref_project_id = "project-J2zPy600ZV7y1F26fbzv4vk9"
 reference_genome = "file-GpkQV9Q07fG36gzq1v1K8FjB"
 
-sample_sheet = "parabricks_fq2bam/sample_sheets/recover_sample_sheet_trim_2.csv"
+sample_sheet = "parabricks_fq2bam/sample_sheets/3-16-26_sample_sheet_trim2.csv"
 output_dir = "parabricks_fq2bam/fastq2bam_sample_jsons"
 
 #Whether or not to use the File ID to look up the DNA nexus filename to validate that the filenames for 2 paried reads differ only by "R1" and "R2"
@@ -31,7 +34,7 @@ Path(output_dir).mkdir(parents=True, exist_ok=True)
 os.makedirs(output_dir, exist_ok=True)
 
 #CUSTOM FUNCTION DEFINITIONS
-def dxlink(file_id: str) -> dict:
+def dxlink(file_id: str, project_id: str) -> dict:
     return {"$dnanexus_link": {"project": project_id, "id": file_id}}
 
 def difference(str1, str2):
@@ -179,8 +182,8 @@ for sample_id, g in grouped_frames:
     # Sort lanes so R1/R2 arrays align by lane order (L001, L002, ...)
     g = g.sort_values("lane")
 
-    r1_list = [dxlink(fid) for fid in g["R1"].tolist()]
-    r2_list = [dxlink(fid) for fid in g["R2"].tolist()]
+    r1_list = [dxlink(fid,fastq_project_id) for fid in g["R1"].tolist()]
+    r2_list = [dxlink(fid,fastq_project_id) for fid in g["R2"].tolist()]
 
     # If trim_length is per-sample, take the first (or validate uniqueness upstream)
     umi = int(g["trim_length"].iloc[0])
@@ -189,7 +192,7 @@ for sample_id, g in grouped_frames:
         "stage-common.r1_fastqs": r1_list,
         "stage-common.r2_fastqs": r2_list,
         "stage-common.trim_length": umi,
-        "stage-common.reference_genome": dxlink(reference_genome)
+        "stage-common.reference_genome": dxlink(reference_genome, ref_project_id)
     }
 
     print(f"All checks for {sample_id} were successful. Generating input.json... ")
