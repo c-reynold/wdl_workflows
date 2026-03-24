@@ -6,15 +6,16 @@ import sys
 from pathlib import Path
 
 #RD_Analysis project: project-GPgxkj8070pyZXjk58KbQffV
-#liquid_hrd project:project-J2zPy600ZV7y1F26fbzv4vk9
+#liquid_hrd project: project-J2zPy600ZV7y1F26fbzv4vk9
+#MyChoice_Liquid_RnD: project-GKVZQyQ029yqqZpK5Z0fYPFY
 
 #These should be the project in which the fastq files are located.
-fastq_project_id = "project-GPgxkj8070pyZXjk58KbQffV"
+fastq_project_id = "project-GKVZQyQ029yqqZpK5Z0fYPFY"
 
 ref_project_id = "project-J2zPy600ZV7y1F26fbzv4vk9"
 reference_genome = "file-GpkQV9Q07fG36gzq1v1K8FjB"
 
-sample_sheet = "parabricks_fq2bam/sample_sheets/3-16-26_sample_sheet_trim2.csv"
+sample_sheet = "parabricks_fq2bam/sample_sheets/xgen_ichor_cna_normals.csv"
 output_dir = "parabricks_fq2bam/fastq2bam_sample_jsons"
 
 #Whether or not to use the File ID to look up the DNA nexus filename to validate that the filenames for 2 paried reads differ only by "R1" and "R2"

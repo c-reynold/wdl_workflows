@@ -5,3 +5,4 @@ dx_compile/dxCompiler-2.15.0.jar
 test_script.sh
 parabricks_fq2bam/fastq2bam_sample_jsons/
 tmp/
+samtools_downsample/mini_wdl/outputs/

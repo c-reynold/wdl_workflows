@@ -1,0 +1,9 @@
+{
+  "bam": "/home/creynold/projects/finale_toolkit/resource_files/466575_downsample_010.bam",
+  "bai": "/home/creynold/projects/finale_toolkit/resource_files/466575_downsample_010.bam.bai",
+  "sample_name":"test",
+  "cpu":8,
+  "disk_size":100,
+  "current_coverage":25,
+  "desired_coverage":12
+}
