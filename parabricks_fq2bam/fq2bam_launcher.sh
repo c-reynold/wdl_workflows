@@ -13,7 +13,7 @@ dx select --name "liquid_hrd"
 
 
 workflow_id="workflow-J6p7vB80ZV7gGqBq7qQP6b7k"
-output_dir="liquid_hrd:/bam_files/aligned_to_MRD_hg19/trim_umi+2"
+output_dir="liquid_hrd:/bam_files/aligned_to_MRD_hg19/trim_umi+1"
 json_directory="parabricks_fq2bam/fastq2bam_sample_jsons"
 
 

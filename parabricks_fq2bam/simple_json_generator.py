@@ -15,7 +15,7 @@ fastq_project_id = "project-GKVZQyQ029yqqZpK5Z0fYPFY"
 ref_project_id = "project-J2zPy600ZV7y1F26fbzv4vk9"
 reference_genome = "file-GpkQV9Q07fG36gzq1v1K8FjB"
 
-sample_sheet = "parabricks_fq2bam/sample_sheets/xgen_ichor_cna_normals.csv"
+sample_sheet = "parabricks_fq2bam/sample_sheets/xgen_ichor_cna_normals_trim_1.csv"
 output_dir = "parabricks_fq2bam/fastq2bam_sample_jsons"
 
 #Whether or not to use the File ID to look up the DNA nexus filename to validate that the filenames for 2 paried reads differ only by "R1" and "R2"
