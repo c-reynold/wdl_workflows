@@ -15,8 +15,8 @@ cpu=4
 
 priority="high" #can be {low, normal, high}
 
-sample_csv="samtools_downsample/launch/sample_sheets/samtools_downsample_sample_sheet.csv"
-dx_parent_dir=f"{project_id}:/workflows/bam_utilities/samtools_downsample/results/downsampling_metins_50x_titration_bams"
+sample_csv="samtools_downsample/launch/sample_sheets/samtools_downsample_.csv"
+dx_parent_dir=f"{project_id}:/workflows/bam_utilities/samtools_downsample/results/downsample_to_1.3X_cfdna_bams"
 
 
 
