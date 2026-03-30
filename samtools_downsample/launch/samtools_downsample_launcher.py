@@ -7,7 +7,7 @@ project_id="project-J2zPy600ZV7y1F26fbzv4vk9"
 app_name=dx.describe(app)["name"] # type: ignore
 
 #These are specifics for 
-disk_size=300 #This is the disk size in GB that will be requested for the instance on DNA nexus
+disk_size=500 #This is the disk size in GB that will be requested for the instance on DNA nexus
 cpu=4 
 
 
